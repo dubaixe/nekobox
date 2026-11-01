@@ -1,0 +1,35 @@
+name: Aria Neko - sing-box 1.15 alpha compatibility
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows-core-alpha:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: core/server/go.mod
+          cache: false
+      - name: Switch to official sing-box 1.15 alpha (isolated build only)
+        working-directory: core/server
+        shell: pwsh
+        run: |
+          # Existing project replaces sing-box with shtorm-7/sing-box-extended 1.14.
+          # Remove that incompatible replacement only in CI workspace, never in main.
+          go mod edit -dropreplace=github.com/sagernet/sing-box
+          go mod edit -require=github.com/sagernet/sing-box@v1.15.0-alpha.13
+          go mod tidy
+          go list -m github.com/sagernet/sing-box
+          go build -o "$env:RUNNER_TEMP/aria-neko-core-alpha.exe" .
+      - name: Smoke test
+        shell: pwsh
+        run: |
+          & "$env:RUNNER_TEMP/aria-neko-core-alpha.exe" --help
+      - name: Upload private-to-workflow test artifact (not a release)
+        uses: actions/upload-artifact@v4
+        with:
+          name: aria-neko-core-alpha-windows-x64
+          path: ${{ runner.temp }}/aria-neko-core-alpha.exe
+          retention-days: 3
