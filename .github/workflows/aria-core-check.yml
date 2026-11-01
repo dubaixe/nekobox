@@ -1,0 +1,30 @@
+name: Aria Neko core compatibility check
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  core-check:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: core/server/go.mod
+          cache-dependency-path: core/server/go.sum
+      - name: Verify Go module metadata
+        working-directory: core/server
+        shell: pwsh
+        run: |
+          go mod verify
+          go list -m github.com/sagernet/sing-box
+      - name: Build core (no publishing)
+        working-directory: core/server
+        shell: pwsh
+        run: go build -o "$env:RUNNER_TEMP/aria-neko-core.exe" .
+      - name: Inspect core version
+        shell: pwsh
+        run: |
+          & "$env:RUNNER_TEMP/aria-neko-core.exe" --help
