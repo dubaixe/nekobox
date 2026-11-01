@@ -1,5 +1,10 @@
 name: Aria Neko - sing-box 1.15 alpha compatibility
 on:
+  push:
+    branches: [dev/aria-neko-v1]
+    paths:
+      - '.github/workflows/aria-singbox-alpha.yml'
+      - 'core/server/**'
   workflow_dispatch:
 permissions:
   contents: read
