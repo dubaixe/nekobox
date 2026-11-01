@@ -13,7 +13,7 @@ require (
 	github.com/qr243vbi/cmdescape v0.0.0-20260403201713-ba83a3d191f9
 	github.com/sagernet/quic-go v0.61.0-sing-box-mod.7
 	github.com/sagernet/sing v0.9.6-0.20260922013354-87c33f17688f
-	github.com/sagernet/sing-box v1.14.2
+	github.com/sagernet/sing-box v1.15.0-alpha.13
 	github.com/sagernet/sing-tun v0.9.6-0.20260924001923-ddaa4ca25e3b
 	github.com/spf13/cobra v1.10.2
 	golang.org/x/crypto v0.57.0
@@ -258,7 +258,6 @@ require (
 	zombiezen.com/go/capnproto2 v2.18.2+incompatible // indirect
 )
 
-replace github.com/sagernet/sing-box => github.com/shtorm-7/sing-box-extended v1.14.1-extended-2.7.2
 
 replace github.com/sagernet/wireguard-go => github.com/shtorm-7/wireguard-go v0.0.6-extended-1.6.1
 
